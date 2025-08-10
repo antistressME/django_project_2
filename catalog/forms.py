@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms import BooleanField
 
 from .models import Product
 
@@ -19,8 +20,11 @@ black_list_words = {
 class StyleFormMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
+        for fild_name, fild in self.fields.items():
+            if isinstance(fild, BooleanField):
+                fild.widget.attrs["class"] = "form-check-input"
+            else:
+                fild.widget.attrs["class"] = "form-control"
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
