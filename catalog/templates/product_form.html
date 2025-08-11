@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Skystore{% endblock %}
+
+{% block content %}
+<h4 class="text-center mt-5 mb-5">
+  {% if blog_note %}
+  Обновить продукт:
+  {% else %}
+  Введите данные, чтобы добавить продукт
+  {% endif %}
+    </h4>
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a class="btn btn-outline-secondary" href="{% url 'catalog:home' %}">Отмена</a>
+</div>
+{% endblock %}
