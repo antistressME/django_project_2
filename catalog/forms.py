@@ -4,6 +4,7 @@ from django.forms import BooleanField
 
 from .models import Product
 
+# Определяем список запрещённых слов.
 black_list_words = {
     "казино",
     "криптовалюта",
@@ -18,6 +19,8 @@ black_list_words = {
 
 
 class StyleFormMixin:
+    """Класс миксин для стилизации формы."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for fild_name, fild in self.fields.items():
@@ -28,6 +31,8 @@ class StyleFormMixin:
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
+    """Класс формы для создания и обновления экземпляра класса Product."""
+
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         self.fields["name"].widget.attrs.update(
@@ -41,12 +46,14 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         )
 
     def clean_price(self):
+        # Метод для проверки, что цена продукта не является отрицательным числом.
         price = self.cleaned_data.get("price")
         if price < 0:
             raise ValidationError("Цена продукта не может быть отрицательной")
         return price
 
     def clean(self):
+        # Метод для проверки названия и описания продукта на наличие запрещённых слов.
         cleaned_data = super().clean()
         name = cleaned_data.get("name")
         description = cleaned_data.get("description")

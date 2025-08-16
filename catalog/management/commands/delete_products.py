@@ -5,6 +5,8 @@ from catalog.models import Category, Product
 
 
 class Command(BaseCommand):
+    """Класс создание кастомной кансольной команды для удаления продуктов."""
+
     help = "Delete test products from the database"
 
     def handle(self, *args, **kwargs):
