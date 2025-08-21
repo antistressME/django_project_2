@@ -65,4 +65,12 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = ("owner", "published")
+
+
+class ProductModeratorForm(StyleFormMixin, forms.ModelForm):
+    """Класс формы для создания и обновления модератарами экземпляра класса Product."""
+
+    class Meta:
+        model = Product
+        exclude = ("owner",)
