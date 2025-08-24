@@ -4,6 +4,8 @@ from users.models import User
 
 
 class Command(BaseCommand):
+    """Класс создание кастомной кансольной команды для создания супер пользователя."""
+
     def handle(self, *args, **options):
         user = User.objects.create(email="admin@admin.com")
         user.set_password("123pas")

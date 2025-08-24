@@ -1,7 +1,11 @@
 from django.db import models
 
+from users.models import User
+
 
 class Category(models.Model):
+    """Класс модели категории продукта."""
+
     name = models.CharField(
         null=False, blank=False, max_length=100, verbose_name="Наименование"
     )
@@ -18,6 +22,8 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """Класс модели продукта."""
+
     name = models.CharField(
         null=False, blank=False, max_length=100, verbose_name="Наименование"
     )
@@ -29,13 +35,22 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
-        related_name="product",
+        related_name="products",
         verbose_name="Категория",
     )
     price = models.FloatField(null=False, blank=False, verbose_name="Цена")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Дата последнего изменения"
+    )
+
+    published = models.BooleanField(default=False, verbose_name="Опубликовать")
+
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="products",
+        verbose_name="Автор",
     )
 
     def __str__(self):
@@ -46,3 +61,6 @@ class Product(models.Model):
         verbose_name_plural = "продукты"
         ordering = ["name"]
         db_table = "custom_table_product"
+        permissions = [
+            ("can_unpublish_product", "Возможность отменять публикацию продукта"),
+        ]

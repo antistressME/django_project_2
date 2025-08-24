@@ -2,6 +2,8 @@ from django.db import models
 
 
 class BlogNote(models.Model):
+    """Класс модели для создания блоговой записи"""
+
     name = models.CharField(max_length=100, verbose_name="Заголовок")
     content = models.TextField(verbose_name="Содержимое")
 

@@ -5,6 +5,8 @@ from catalog.models import Category, Product
 
 
 class Command(BaseCommand):
+    """Класс создание кастомной кансольной команды для добавления тестовых продуктов."""
+
     help = "Add test products to the database"
 
     def handle(self, *args, **kwargs):
