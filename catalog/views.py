@@ -8,6 +8,7 @@ from config.settings import BASE_DIR
 
 from .forms import ProductForm, ProductModeratorForm
 from .models import Product
+from .services import ProductService
 
 
 class ProductListView(ListView):
@@ -96,3 +97,14 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
             or user != self.object.owner
         ):
             raise PermissionDenied()
+
+
+class CategoryProductView(ListView):
+    """Класс контройлер для отображения продуктов указанной категории."""
+
+    model = Product
+    template_name = "category_product.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        return ProductService.get_products_from_cache(self.kwargs["pk"])

@@ -1,29 +1,32 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from catalog.apps import CatalogConfig
 
-from .views import (ContactsTemplateView, ProductCreateView, ProductDeleteView,
-                    ProductDetailView, ProductListView, ProductUpdateView)
+from .views import (CategoryProductView, ContactsTemplateView,
+                    ProductCreateView, ProductDeleteView, ProductDetailView,
+                    ProductListView, ProductUpdateView)
 
 app_name = CatalogConfig.name
 
 urlpatterns = [
     path("home/", ProductListView.as_view(), name="home"),
-    path("product_page/<int:pk>/", ProductDetailView.as_view(), name="product_page"),
+    path(
+        "product_page/<int:pk>/",
+        cache_page(6)(ProductDetailView.as_view()),
+        name="product_page",
+    ),
     path("contacts/", ContactsTemplateView.as_view(), name="contacts"),
-    path("product/new/", ProductCreateView.as_view(), name="product_form"),
+    path("products/new/", ProductCreateView.as_view(), name="product_form"),
     path(
-        "product/update/<int:pk>/", ProductUpdateView.as_view(), name="product_update"
+        "products/update/<int:pk>/", ProductUpdateView.as_view(), name="product_update"
     ),
     path(
-        "product/delete/<int:pk>/", ProductDeleteView.as_view(), name="product_delete"
+        "products/delete/<int:pk>/", ProductDeleteView.as_view(), name="product_delete"
     ),
-    # path("product/unpublish/<int:pk>", ProductUnpublishView.as_view(), name="unpublish")
+    path(
+        "products/category/<int:pk>/",
+        CategoryProductView.as_view(),
+        name="category_products",
+    ),
 ]
-
-
-# {% if "catalog.can_unpublish_product" in perms and product.published %}
-#                         <a class="p-2 btn btn-outline-danger" href="{% url 'catalog:unpublish' product.pk %}">
-#                             Убрать из опубликованных
-#                         </a>
-#                         {% endif %}
