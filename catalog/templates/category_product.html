@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ product.category.name }}{% endblock %}
+{% block title %}{{ product.category }}{% endblock %}
 
 {% block content %}
-    {% include 'header.html' %}
+{% include 'header.html' %}
     {% for product in products %}
+        <div class="row text-start">
+            <h4 class="text-info-emphasis">
+            Товар категории {{ product.category }}:
+            </h4>
+        </div>
         <div class="row text-center">
             <div class="col-3">
                 <div class="card mb-4 box-shadow">
